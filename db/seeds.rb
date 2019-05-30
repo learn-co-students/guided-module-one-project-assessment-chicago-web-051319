@@ -27,9 +27,3 @@ Order.create(name: "Trendy menu", rice_id: 3, filling_id: 8, total_price: 19, us
 Order.create(name: "Discover new taste", rice_id: 2, filling_id: 7, total_price: 22, user_name: "Tony")
 
 
-# How can I drop the current data?
-
-#How can I make id for each rice type and filling type?
-# Order.create(name: "Yuta's favorite", rice_id: white_rice.id, filling_id: salmon.id, total_price: 20)
-
-

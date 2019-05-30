@@ -5,57 +5,94 @@ class CommandLineInterface
         puts <<-MULTILINE
 
 
-         Welcome to the Onigiri order app!
-         *********************************
+        Welcome to the Onigiri order app!
+        ▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼
+
+
             MULTILINE
      end
+
+    # Error message template
+     def error_message
+        puts "                     "
+        puts "Please enter a valid number!"
+     end
+
 
     # get user name
     def login
         puts <<-MULTILINE
-
            Please enter your user name.
 
         MULTILINE
         user_name = gets.chomp
-        puts "                                 "
-        puts "Hi #{user_name}, what do you want to order?"
+
+        puts <<-MULTILINE
+
+        Hi #{user_name}, what would you like to order?
+
+        MULTILINE
+
         user_name
     end
 
 
     def ask_user_what_they_want
+        puts <<-MULTILINE
 
-        puts "1: Choose from our menu  2: Make your own onigiri"
-        gets.chomp
+   1: Choose from our menu    2: Make your own onigiri
+   ────────────────────────   ─────────────────────────
+
+        MULTILINE
+        answer = gets.chomp
+
+        # Error check
+        if answer != "1" && answer != "2"
+            error_message
+            ask_user_what_they_want
+        else answer
+        end
     end
 
     # show all the combinations
     def list_all_combinations
-            puts "Which onigiri are you interested in?"
-            puts "+++++++++++ MENU +++++++++++"
+            puts "                                    "
+            puts "        Which onigiri are you interested in?"
+            puts "                                    "
+            puts "            +++++++++++ MENU +++++++++++"
             Order.first(5).each do |title|
-                puts "#{title.id}. #{title.name}"
+                puts "              #{title.id}. #{title.name}"
             end
-            puts "++++++++++++++++++++++++++++"
+            puts "            ++++++++++++++++++++++++++++"
     end
 
     def choose_from_menu
+        # get user input
         order_id = gets.chomp
-        selected_menu_name = Order.find_by(id: order_id).name
-        puts "Your choice: #{selected_menu_name}"
 
-        selected_rice_id = Order.find_by(id: order_id).rice_id
-        rice_in_the_menu= Rice.find_by(id: selected_rice_id).name
+        # Error check
+        if order_id != "1" && order_id != "2" && order_id != "3" && order_id != "4" && order_id != "5"
+            #Error
+            error_message
+            choose_from_menu
+        else
+            #Success
+            selected_menu_name = Order.find_by(id: order_id).name
+            puts "                                    "
+            puts "Your choice => #{selected_menu_name}!"
 
-        selected_filling_id = Order.find_by(id: order_id).filling_id
-        filling_in_the_menu= Filling.find_by(id: selected_filling_id).name
+            selected_rice_id = Order.find_by(id: order_id).rice_id
+            rice_in_the_menu= Rice.find_by(id: selected_rice_id).name
 
-        selected_menu_price = Order.find_by(id: order_id).total_price
+            selected_filling_id = Order.find_by(id: order_id).filling_id
+            filling_in_the_menu= Filling.find_by(id: selected_filling_id).name
 
-        puts "  Detail: #{rice_in_the_menu} & #{filling_in_the_menu} ($#{selected_menu_price})"
-        puts "                                   "
-        puts "Thank you for your order!"
+            selected_menu_price = Order.find_by(id: order_id).total_price
+
+            puts "Detail: #{rice_in_the_menu} & #{filling_in_the_menu} ($#{selected_menu_price})"
+            puts "                                   "
+            puts "Thank you for your order!"
+        end
 
     end
 
@@ -74,11 +111,17 @@ class CommandLineInterface
         puts "++++++++++++++++++++++++++++"
 
         rice_id = gets.chomp
-        selected_rice_name = Rice.find_by(id: rice_id).name
-        puts "Your choice: #{selected_rice_name}"
-        rice_id
-        # rice_name = gets.chomp
-        # Rice.find_by(name: rice_name).id
+
+        if rice_id != "1" && rice_id != "2" && rice_id != "3" && rice_id != "4" && rice_id != "5" && rice_id != "6"
+            #Error
+            error_message
+            select_rice
+        else
+            selected_rice_name = Rice.find_by(id: rice_id).name
+            puts "Your choice: #{selected_rice_name}"
+            rice_id
+        end
+
     end
 
     def select_filling
@@ -92,11 +135,15 @@ class CommandLineInterface
         puts "++++++++++++++++++++++++++++"
         # binding.pry
         filling_id = gets.chomp
-        selected_filling_name = Filling.find_by(id: filling_id).name
-        puts "Your choice: #{selected_filling_name}"
-        filling_id
-        # filling_name = gets.chomp
-        # Filling.find_by(name: filling_name).id
+        if filling_id != "1" && filling_id != "2" && filling_id != "3" && filling_id != "4" && filling_id != "5" && filling_id != "6" && filling_id != "7" && filling_id != "8"
+        #Error
+            error_message
+            select_filling
+        else
+            selected_filling_name = Filling.find_by(id: filling_id).name
+            puts "Your choice: #{selected_filling_name}"
+            filling_id
+        end
     end
 
     def name_order
@@ -119,7 +166,15 @@ class CommandLineInterface
         puts "#{new_name}"
         puts "                   "
         puts "1. Yes, save it    2. Yes, but I want to edit name     3. No, delete it"
-        gets.chomp
+        confirm_answer = gets.chomp
+          if confirm_answer != "1" && confirm_answer != "2" && confirm_answer != "3"
+        #Error
+            error_message
+            confirm_order(new_name)
+        else
+            confirm_answer
+        end
+
     end
 
 
@@ -165,6 +220,6 @@ class CommandLineInterface
                         delete_order_data(new_name)
                     end
             end
-    end
+        end
 
 end
