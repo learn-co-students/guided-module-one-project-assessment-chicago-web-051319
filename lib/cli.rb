@@ -5,16 +5,21 @@ class CommandLineInterface
         puts <<-MULTILINE
 
 
-        Welcome to the Onigiri order app!
-        ▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼
+
+　        Welcome to the ONIGIRI order app!
+          ▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼
 
 
             MULTILINE
      end
 
+    def space
+        puts "              "
+    end
+
     # Error message template
      def error_message
-        puts "                     "
+        space
         puts "Please enter a valid number!"
      end
 
@@ -22,14 +27,15 @@ class CommandLineInterface
     # get user name
     def login
         puts <<-MULTILINE
-           Please enter your user name.
+        　   Please enter your user name.
 
         MULTILINE
         user_name = gets.chomp
 
         puts <<-MULTILINE
 
-        Hi #{user_name}, what would you like to order?
+
+          Hi #{user_name}, how would you like to order?
 
         MULTILINE
 
@@ -40,8 +46,8 @@ class CommandLineInterface
     def ask_user_what_they_want
         puts <<-MULTILINE
 
-   1: Choose from our menu    2: Make your own onigiri
-   ────────────────────────   ─────────────────────────
+  1. Choose from our menu    2. Make your own onigiri
+  ────────────────────────   ─────────────────────────
 
         MULTILINE
         answer = gets.chomp
@@ -56,14 +62,16 @@ class CommandLineInterface
 
     # show all the combinations
     def list_all_combinations
-            puts "                                    "
-            puts "        Which onigiri are you interested in?"
-            puts "                                    "
-            puts "            +++++++++++ MENU +++++++++++"
+            space
+            puts "              Which onigiri do you want?"
+            space
+            puts "             +++++++++++ MENU +++++++++++"
+            space
             Order.first(5).each do |title|
-                puts "              #{title.id}. #{title.name}"
+                puts "              #{title.id}. #{title.name} ($#{title.total_price})"
             end
-            puts "            ++++++++++++++++++++++++++++"
+            space
+            puts "             ++++++++++++++++++++++++++++"
     end
 
     def choose_from_menu
@@ -78,8 +86,9 @@ class CommandLineInterface
         else
             #Success
             selected_menu_name = Order.find_by(id: order_id).name
-            puts "                                    "
-            puts "Your choice => #{selected_menu_name}!"
+            space
+            puts "             Thank you for your order!"
+            puts "             #{selected_menu_name} is a great choice!"
 
             selected_rice_id = Order.find_by(id: order_id).rice_id
             rice_in_the_menu= Rice.find_by(id: selected_rice_id).name
@@ -89,9 +98,21 @@ class CommandLineInterface
 
             selected_menu_price = Order.find_by(id: order_id).total_price
 
-            puts "Detail: #{rice_in_the_menu} & #{filling_in_the_menu} ($#{selected_menu_price})"
-            puts "                                   "
-            puts "Thank you for your order!"
+            puts <<-MULTILINE
+
+            ◇――――――――――Receipt――――――――――◇
+
+              #{selected_menu_name}
+               -Rice: #{rice_in_the_menu}
+               -Filling: #{filling_in_the_menu}
+
+                             Total: $#{selected_menu_price}
+            ◇―――――――――――――――――――――――――――◇
+
+            　 See you soon! ヾ(●´∀｀●)
+
+
+            MULTILINE
         end
 
     end
@@ -102,13 +123,16 @@ class CommandLineInterface
 
 
     def select_rice
-        puts "                               "
-        puts "Choose your favorite rice type to get started."
-        puts "+++++++++++ Rice Types +++++++++++"
-        Rice.all.each do |rice|
-            puts "#{rice.id}. #{rice.name}: $#{rice.price}"
-        end
-        puts "++++++++++++++++++++++++++++"
+        space
+        puts "       Choose your favorite rice type to get started."
+        space
+        puts "              +++++++++ Rice Types +++++++++"
+        space
+            Rice.all.each do |rice|
+             puts "                #{rice.id}. #{rice.name} ($#{rice.price})"
+            end
+        space
+        puts "              +++++++++++++++++++++++++++++"
 
         rice_id = gets.chomp
 
@@ -118,7 +142,7 @@ class CommandLineInterface
             select_rice
         else
             selected_rice_name = Rice.find_by(id: rice_id).name
-            puts "Your choice: #{selected_rice_name}"
+            puts "               Your choice: #{selected_rice_name}"
             rice_id
         end
 
@@ -126,13 +150,16 @@ class CommandLineInterface
 
     def select_filling
         puts "                               "
-        puts "Next, choose your favorite filling"
-        puts "+++++++++++ Fillings +++++++++++"
-        Filling.all.each do |filling|
-            puts "#{filling.id}. #{filling.name}: $#{filling.price}"
+        puts "           Next, choose your favorite filling."
+        space
+        puts "              +++++++++ Fillings +++++++++"
+        space
+            Filling.all.each do |filling|
+                puts "                #{filling.id}. #{filling.name} ($#{filling.price})"
 
-        end
-        puts "++++++++++++++++++++++++++++"
+            end
+        space
+        puts "              ++++++++++++++++++++++++++++"
         # binding.pry
         filling_id = gets.chomp
         if filling_id != "1" && filling_id != "2" && filling_id != "3" && filling_id != "4" && filling_id != "5" && filling_id != "6" && filling_id != "7" && filling_id != "8"
@@ -141,31 +168,33 @@ class CommandLineInterface
             select_filling
         else
             selected_filling_name = Filling.find_by(id: filling_id).name
-            puts "Your choice: #{selected_filling_name}"
+            puts "                 Your choice: #{selected_filling_name}"
             filling_id
         end
     end
 
     def name_order
-        puts "                                 "
-        puts "What do you name this combination?"
+        space
+        puts "            What do you name this combination?"
+        space
+        space
         new_name = gets.chomp
     end
 
     def create_new_combination(selected_rice, selected_filling, new_name, user_name)
         price = Rice.find_by(id: selected_rice).price + Filling.find_by(id: selected_filling).price
         Order.create(name: new_name, rice_id: selected_rice, filling_id: selected_filling, total_price: price, user_name: user_name)
-        puts "                                         "
-        puts "Total price for #{new_name} is $#{price}."
-        puts "Thank you for your order!"
+
+        space
+        puts "              Total price for #{new_name} is gonna be $#{price}."
     end
 
     def confirm_order(new_name)
         puts "                               "
-        puts "Do you want to save this combination?"
+        puts "              Do you want to complete this order?"
         puts "#{new_name}"
         puts "                   "
-        puts "1. Yes, save it    2. Yes, but I want to edit name     3. No, delete it"
+        puts "    1. Yes    2. Yes, but I want to edit the name     3. No, delete it"
         confirm_answer = gets.chomp
           if confirm_answer != "1" && confirm_answer != "2" && confirm_answer != "3"
         #Error
@@ -179,22 +208,22 @@ class CommandLineInterface
 
 
     def edit_name(new_name)
-        puts "Enter new name for this combination."
+        puts "              Enter new name for this combination."
         order = Order.find_by(name: new_name)
         edited_name = gets.chomp
         order.update(:name => edited_name)
     end
 
     def save_message
-        puts "                               "
-        puts "We saved your data. See you soon!"
+        space
+        puts "          Thank you for your order! See you soon!ヾ(●´∀｀●)"
     end
 
     def delete_order_data(new_name)
         target_order = Order.find_by(name: new_name)
         target_order.delete
-        puts "                               "
-        puts "We deleted your combination. See you soon!"
+        space
+        puts "       We deleted your combination. See you soon! ヾ(●´∀｀●)"
     end
 
 
@@ -223,3 +252,4 @@ class CommandLineInterface
         end
 
 end
+
