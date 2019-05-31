@@ -21,7 +21,7 @@ class Favorite < ActiveRecord::Base
 
   def self.prompt()
     puts " "
-    gets.chomp
+    gets.chomp.downcase
   end
 
   def self.show_fav_list
@@ -37,20 +37,22 @@ class Favorite < ActiveRecord::Base
     end
   end
 
+
   def self.choice_of_movie
       puts "Please enter a Movie Title to be added to your Favorites:"
       puts "                        or"
       puts "Press b to go back"
       input = self.prompt()
-      movie = Movie.find_by title: input
-    if movie != nil && input == movie.title
+      # movie = Movie.find_by title: input
+      movie = Movie.where("LOWER(title) = ?", input)[0]
+    if input == "b"
+      return
+    elsif movie != nil && input == movie.title.downcase
       user_id = User.finding_user.id
       self.find_or_create_by(movie_id: movie.id, user_id: user_id)
       puts " "
       puts "#{movie.title} has been successfully added to your favorites list."
       puts " "
-    elsif input == "b"
-      return
     else
       puts "Invalid Command"
     end
@@ -61,15 +63,16 @@ class Favorite < ActiveRecord::Base
       puts "        or"
       puts "Type b to go Back"
       input = self.prompt()
-      movie = Movie.find_by title: input
+      # movie = Movie.find_by title: input
+      movie = Movie.where("LOWER(title) = ?", input)[0]
+    if input == "b"
+      return
+    elsif movie != nil && input == movie.title.downcase
       movie_id = movie.id
-    if movie != nil && input == movie.title
       user_id = User.finding_user.id
-      del_mov = self.find_by(movie_id: movie_id)
+      del_mov = Favorite.find_by(user_id: user_id, movie_id: movie_id)
       del_mov.destroy
       puts "#{movie.title} has been successfully deleted from your list. "
-    elsif input == "b"
-      return
     else
       return
     end

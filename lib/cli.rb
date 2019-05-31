@@ -41,63 +41,51 @@ class CommandLineInterface
   def run
     help
     input = prompt()
-      if input == "1"
-        self.run
-      elsif input == "2"
-        genres
-        self.run
-      elsif input == "3"
-        favorite
-        self.run
-      elsif input == "4"
-        changeing_name
-        self.run
-      elsif input == "5"
-        exit
-      else
-        puts "Invalid command"
-        self.run
-      end
-  end
-
-
-  def genres
-      self.list_of_genres
-      input = prompt()
     if input == "1"
-      Movie.action
-      Favorite.choice_of_movie
-      self.genres
+      self.run
     elsif input == "2"
-      Movie.comedy
-      Favorite.choice_of_movie
       self.genres
     elsif input == "3"
-      Movie.science_fiction
-      Favorite.choice_of_movie
-      self.genres
+      self.favorite
     elsif input == "4"
-      Movie.romance
-      Favorite.choice_of_movie
-      self.genres
+      self.changing_name
     elsif input == "5"
-      Movie.horror
-      Favorite.choice_of_movie
-      self.genres
-    elsif input == "6"
-      Movie.mystery
-      Favorite.choice_of_movie
-      self.genres
-    elsif input == "7"
-      Movie.all_movies
-      Favorite.choice_of_movie
-      self.genres
-    elsif input == "b"
-      #Go back to Run
+      return self.exit
     else
       puts "Invalid command"
-      self.genres
     end
+  end
+
+  def changing_name
+    User.change_name
+    self.run
+  end
+
+  def genres
+    self.list_of_genres
+    input = prompt()
+    if input == "1"
+      Movie.action
+    elsif input == "2"
+      Movie.comedy
+    elsif input == "3"
+      Movie.science_fiction
+    elsif input == "4"
+      Movie.romance
+    elsif input == "5"
+      Movie.horror
+    elsif input == "6"
+      Movie.mystery
+    elsif input == "7"
+      Movie.all_movies
+    elsif input == "b"
+      self.run
+      return
+    else
+      puts "Invalid command"
+    end
+    Favorite.choice_of_movie
+    self.run
   end
 
   def favorite
@@ -105,21 +93,20 @@ class CommandLineInterface
       input = prompt()
     if input == "1"
       Favorite.show_fav_list
-      self.favorite
     elsif input == "2"
       Favorite.show_fav_list
       Favorite.delete_a_mov
-      self.favorite
     elsif input == "3"
       Favorite.show_fav_list
       Favorite.delete_all
-      self.favorite
     elsif input == "b"
-      #Let you out from this favorite list because this method is going to be completed
+      self.run
+      return
     else
       puts "Invalid Command"
       self.favorite
     end
+    self.favorite
   end
 
   def exit
