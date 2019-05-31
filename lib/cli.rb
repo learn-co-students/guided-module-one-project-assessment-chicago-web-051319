@@ -1,4 +1,5 @@
 class CommandLineInterface
+
   def sign_in_user
     User.sign_in
   end
@@ -85,7 +86,7 @@ class CommandLineInterface
       puts "Invalid command"
     end
     Favorite.choice_of_movie
-    self.run
+    self.genres
   end
 
   def favorite
@@ -104,7 +105,6 @@ class CommandLineInterface
       return
     else
       puts "Invalid Command"
-      self.favorite
     end
     self.favorite
   end

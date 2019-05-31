@@ -40,7 +40,7 @@ class Favorite < ActiveRecord::Base
 
   def self.choice_of_movie
       puts "Please enter a Movie Title to be added to your Favorites:"
-      puts "                        or"
+      puts "        or"
       puts "Press b to go back"
       input = self.prompt()
       # movie = Movie.find_by title: input
