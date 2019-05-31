@@ -5,17 +5,17 @@ class Favorite < ActiveRecord::Base
   belongs_to :user
 
   def self.fav_help
-    puts "            ########################"
-    puts "             Favorite List of Movies"
-    puts "            ########################"
+    puts "                    ########################"
+    puts "                     Favorite List of Movies"
+    puts "                    ########################"
     puts " "
-    puts " ______________________________________________"
-    puts "|         Type a number to proceed             |"
-    puts "|     1. View your favorites                   |"
-    puts "|     2. Remove a movie from your favorites    |"
-    puts "|     3. Delete all your favorites list        |"
-    puts "|     b. Back                                  |"
-    puts "|___________________________________ฅ^._.^ฅ____|"
+    puts "         ______________________________________________"
+    puts "        |         Type a number to proceed:            |"
+    puts "        |     1. View your favorites                   |"
+    puts "        |     2. Remove a movie from your favorites    |"
+    puts "        |     3. Delete all your favorites list        |"
+    puts "        |     b. Back                                  |"
+    puts "        |___________________________________ฅ^._.^ฅ____|"
     puts " "
   end
 

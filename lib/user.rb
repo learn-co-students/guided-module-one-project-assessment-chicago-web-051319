@@ -11,11 +11,11 @@ class User < ActiveRecord::Base
   end
 
   def self.message
-    puts "                    ヾ(๑╹ヮ╹๑)ﾉ”"
-    puts "     #########################################"
-    puts "        Welcome to the Movie Finder #{@input}!"
-    puts "     #########################################"
-    puts "                   "
+    puts "                           ヾ(๑╹ヮ╹๑)ﾉ”"
+    puts "           #########################################"
+    puts "               Welcome to the Movie Finder #{@input}!"
+    puts "           #########################################"
+    puts " "
   end
 
   def self.sign_in
@@ -47,6 +47,10 @@ class User < ActiveRecord::Base
     gets.chomp
   end
 
+  def self.show_user_name
+    @input
+  end
+
   def self.change_name
     user_name = self.finding_user.name
     received_name = self.username()
@@ -55,15 +59,10 @@ class User < ActiveRecord::Base
       this_user = User.find_by(name: received_name)
       this_user.update(name: @input)
       puts "Your username has successfully changed to #{@input}."
-    elsif input == "b" || input == "back"
-      return
     else
       puts "- Invalid user name"
+      return
     end
-  end
-
-  def self.show_user_name
-    @input
   end
 
 end
