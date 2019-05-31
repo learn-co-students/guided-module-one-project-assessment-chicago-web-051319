@@ -44,7 +44,6 @@ class Favorite < ActiveRecord::Base
       puts "- Press b to go back"
       puts " "
       input = self.prompt()
-      # movie = Movie.find_by title: input
       movie = Movie.where("LOWER(title) = ?", input)[0]
     if input == "b"
       return
@@ -64,7 +63,6 @@ class Favorite < ActiveRecord::Base
       puts "- Type b to go Back"
       puts " "
       input = self.prompt()
-      # movie = Movie.find_by title: input
       movie = Movie.where("LOWER(title) = ?", input)[0]
     if input == "b" || input == "back"
       return

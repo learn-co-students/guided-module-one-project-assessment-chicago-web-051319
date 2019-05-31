@@ -40,8 +40,8 @@ class CommandLineInterface
   end
 
   def self.run
-    help
-    input = prompt()
+    self.help
+    input = self.prompt()
     if input == "1" || input == "help"
       self.run
     elsif input == "2" || input == "genres"
@@ -64,7 +64,7 @@ class CommandLineInterface
 
   def self.genres
     self.list_of_genres
-    input = prompt()
+    input = self.prompt()
     if input == "1" || input == "action"
       Movie.action
     elsif input == "2" || input == "comedy"
