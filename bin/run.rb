@@ -1,8 +1,8 @@
 require_relative '../config/environment'
 require 'pry'
-cli = CommandLineInterface.new
+CommandLineInterface.new
 
-cli.sign_in_user
-cli.run
+CommandLineInterface.sign_in_user
+CommandLineInterface.run
 
 # ruby bin/run.rb

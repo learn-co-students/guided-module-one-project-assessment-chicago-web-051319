@@ -26,7 +26,8 @@ class Favorite < ActiveRecord::Base
 
   def self.show_fav_list
     self.get_user_fav.map do |fav|
-      puts " - " + fav.movie.title
+      puts "     - " + fav.movie.title
+      puts " "
     end
     puts " "
   end
@@ -39,9 +40,9 @@ class Favorite < ActiveRecord::Base
 
 
   def self.choice_of_movie
-      puts "Please enter a Movie Title to be added to your Favorites:"
-      puts "        or"
-      puts "Press b to go back"
+      puts "- Please enter a Movie Title to be added to your Favorites:"
+      puts "- Press b to go back"
+      puts " "
       input = self.prompt()
       # movie = Movie.find_by title: input
       movie = Movie.where("LOWER(title) = ?", input)[0]
@@ -54,18 +55,18 @@ class Favorite < ActiveRecord::Base
       puts "#{movie.title} has been successfully added to your favorites list."
       puts " "
     else
-      puts "Invalid Command"
+      puts "- Invalid Command"
     end
   end
 
   def self.delete_a_mov
-      puts "Please enter the Movie title to Delete"
-      puts "        or"
-      puts "Type b to go Back"
+      puts "- Please enter the Movie title to Delete:"
+      puts "- Type b to go Back"
+      puts " "
       input = self.prompt()
       # movie = Movie.find_by title: input
       movie = Movie.where("LOWER(title) = ?", input)[0]
-    if input == "b"
+    if input == "b" || input == "back"
       return
     elsif movie != nil && input == movie.title.downcase
       movie_id = movie.id
@@ -79,20 +80,20 @@ class Favorite < ActiveRecord::Base
   end
 
   def self.delete_command()
-    puts "Do you really want to delete all movies from your list?"
+    puts "- Do you really want to delete all movies from your list?"
     puts "Y: yes    /   N: no"
-    gets.chomp.capitalize
+    gets.chomp.upcase
   end
 
   def self.delete_all
       input = delete_command()
-    if input == "Y"
+    if input == "Y" || input == "YES"
       self.all.each do |info|
         if info.user_id == User.finding_user.id
         info.destroy
       end
      end
-    elsif input == "N"
+   elsif input == "N" || input == "NO"
       return
     end
   end

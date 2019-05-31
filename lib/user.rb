@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
   def self.prompt()
     puts " "
-    puts "Please Enter your Name: "
+    puts "- Please Enter your Name: "
     puts " "
     gets.chomp
   end
@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   end
 
   def self.sign_in
-    puts "+++++What is your name?+++++"
+    puts "- What is your name?"
     @input = prompt()
     self.message
     User.find_or_create_by name: @input
@@ -33,37 +33,37 @@ class User < ActiveRecord::Base
     self.all.find_by name: @input
   end
 
-  def self.inputted_name
-    @input
-  end
 
   def self.username()
-    puts "What is your current username?"
+    puts "- What is your current username?"
+    puts "- Type b to go back"
     puts " "
     gets.chomp
   end
 
   def self.modify_name()
-    puts "Enter a new username:"
+    puts "- Enter a new username:"
     puts " "
     gets.chomp
   end
 
   def self.change_name
     user_name = self.finding_user.name
-    input = self.username()
-    if user_name != nil && input == user_name
+    received_name = self.username()
+    if user_name != nil && received_name == user_name
       @input = self.modify_name()
-      this_user = User.find_by(name: input)
+      this_user = User.find_by(name: received_name)
       this_user.update(name: @input)
       puts "Your username has successfully changed to #{@input}."
+    elsif input == "b" || input == "back"
+      return
     else
-      puts "Invalid user name"
+      puts "- Invalid user name"
     end
   end
 
   def self.show_user_name
-    self.inputted_name
+    @input
   end
 
 end
