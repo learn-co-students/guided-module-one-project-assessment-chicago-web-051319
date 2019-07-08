@@ -5,6 +5,7 @@ class Favorite < ActiveRecord::Base
   belongs_to :user
 
   def self.fav_help
+    # puts `clear`
     puts "                    ########################"
     puts "                     Favorite List of Movies"
     puts "                    ########################"
@@ -19,13 +20,13 @@ class Favorite < ActiveRecord::Base
     puts " "
   end
 
-  def self.prompt()
+  def self.prompt
     puts " "
     gets.chomp.downcase
   end
 
   def self.show_fav_list
-    self.get_user_fav.map do |fav|
+    self.get_user_fav.each do |fav|
       puts "     - " + fav.movie.title
       puts " "
     end
@@ -33,9 +34,10 @@ class Favorite < ActiveRecord::Base
   end
 
   def self.get_user_fav
-    self.all.select do |fav|
-      fav.user_id == User.finding_user.id
-    end
+    User.finding_user.favorites
+    # self.all.select do |fav|
+    #   fav.user_id == User.finding_user.id
+    # end
   end
 
 
@@ -43,7 +45,7 @@ class Favorite < ActiveRecord::Base
       puts "- Please enter a Movie Title to be added to your Favorites:"
       puts "- Press b to go back"
       puts " "
-      input = self.prompt()
+      input = self.prompt
       movie = Movie.where("LOWER(title) = ?", input)[0]
     if input == "b"
       return
@@ -62,7 +64,8 @@ class Favorite < ActiveRecord::Base
       puts "- Please enter the Movie title to Delete:"
       puts "- Type b to go Back"
       puts " "
-      input = self.prompt()
+      input = self.prompt
+      # movie = Movie.find_by title: input
       movie = Movie.where("LOWER(title) = ?", input)[0]
     if input == "b" || input == "back"
       return
@@ -77,14 +80,14 @@ class Favorite < ActiveRecord::Base
     end
   end
 
-  def self.delete_command()
+  def self.delete_command
     puts "- Do you really want to delete all movies from your list?"
     puts "Y: yes    /   N: no"
     gets.chomp.upcase
   end
 
   def self.delete_all
-      input = delete_command()
+      input = delete_command
     if input == "Y" || input == "YES"
       self.all.each do |info|
         if info.user_id == User.finding_user.id

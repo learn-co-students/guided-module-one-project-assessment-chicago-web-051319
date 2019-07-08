@@ -2,6 +2,7 @@ require 'pry'
 
 class User < ActiveRecord::Base
   has_many :favorites
+  has_many :movies, through: :favorites
 
   def self.prompt()
     puts " "
@@ -20,9 +21,18 @@ class User < ActiveRecord::Base
 
   def self.sign_in
     puts "- What is your name?"
-    @input = prompt()
+    @input = prompt
     self.message
     User.find_or_create_by name: @input
+    puts " "
+    puts " "
+    i = 3
+    puts "LOADING"
+    4.times do
+      sleep(1)
+      puts "#{i}..."
+      i -= 1
+    end
   end
 
   def self.all_user
@@ -30,7 +40,7 @@ class User < ActiveRecord::Base
   end
 
   def self.finding_user
-    self.all.find_by name: @input
+    self.find_by name: @input
   end
 
 

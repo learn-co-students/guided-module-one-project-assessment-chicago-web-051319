@@ -1,11 +1,16 @@
 require 'pry'
 
 class Movie < ActiveRecord::Base
-  belongs_to :genres
+  belongs_to :genre
   has_many :favorites
+  has_many :users, through: :favorites
 
   def self.list_of_movies
     self.all
+  end
+
+  def self.all_by_genre(genre_id)
+    self.all.where("genre_id = ?", genre_id)
   end
 
   def self.all_movies

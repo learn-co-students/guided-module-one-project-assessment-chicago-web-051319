@@ -5,6 +5,7 @@ class CommandLineInterface
   end
 
   def self.help
+    puts `clear`
     puts " "
     puts "               Hi, #{User.show_user_name}!"
     puts " "
@@ -19,6 +20,7 @@ class CommandLineInterface
   end
 
   def self.list_of_genres
+    puts `clear`
     puts "         _______(๑•᎑< ๑)♡______________________________"
     puts "        | Type the number of genre you are interested: |"
     puts "        |               1. Action                      |"
@@ -32,7 +34,7 @@ class CommandLineInterface
     puts "        |___________________________________ฅ^._.^ฅ____|"
   end
 
-  def self.prompt()
+  def self.prompt
     puts " "
     puts "- Please enter a command:"
     puts " "
@@ -100,8 +102,7 @@ class CommandLineInterface
       Favorite.show_fav_list
       Favorite.delete_all
     elsif input == "b"
-      self.run
-      return
+      return self.run
     else
       puts "- Invalid Command"
     end
